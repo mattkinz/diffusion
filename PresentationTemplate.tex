@@ -1,0 +1,412 @@
+%##############################################################################
+%  PRESENTATION TEMPLATE.TEX
+%
+%  DESCRIPTION
+%    This document is a template TEX file for a BEAMER presentation.
+%
+%  AUTHOR
+%    Taylor Hines, taylor.hines@asu.edu
+%
+%  MODIFICATION HISTORY
+%    05/11/09 - Date of creation
+%
+%  NOTES
+%    You definitely do not need to acknowledge me in any way if you
+%    use this template.  This document has probably been borderline
+%    copied from other people.  In fact, you should probably just
+%    delete this paragraph.
+%
+%##############################################################################
+%##############################################################################
+%
+%       TITLE:
+%
+%       AUTHOR:
+%
+%       DATE:
+%
+%
+%##############################################################################
+%##############################################################################
+%
+%   SETTINGS AND PACKAGES
+%
+\documentclass[compress]{beamer}
+
+\input{BEAMERoptions.tex}
+
+\usepackage{graphics,multimedia,times,url}
+\usepackage[english]{babel}
+
+\title{Sample BEAMER Presentation}
+\author{ Matt Kinsinger\thanks{mkinsing@asu.edu} }
+\date{May 9, 2017}
+
+\institute[Mathematics and Statistics]{
+\includegraphics[height=.85cm]{ASUlogo.pdf} \\
+{\color{ASUred} SCHOOL OF \textbf{MATHEMATICAL AND STATISTICAL SCIENCES}}}
+
+%#############################################################################
+%#############################################################################
+%
+%   BEGIN PRESENTATION
+%
+\begin{document}
+
+%#############################################################################
+%#############################################################################
+%
+%       TITLE FRAME
+%
+\begin{frame}[plain]
+	\titlepage
+	\transboxout
+\end{frame}
+
+%#############################################################################
+%#############################################################################
+%
+%       INTRODUCTION
+%
+\section{Introduction}\label{Introduction}
+
+\begin{frame}\frametitle{Introduction} %a frame is a slide
+\begin{itemize}
+\item Heat as a function of 1-dimensional space and time: $u(x,t)$
+\item Notation for $u$ evaluated at discretized points in space and time $$u(x_i,t_n)=u_i^n$$
+\item The heat equation, a second order partial differential equation
+$$\frac{\partial u}{\partial t}=k\frac{\partial ^2u}{\partial x^2 }$$
+\item Euler's method approximation
+$$u_i^{n+1}\approx u_i^n+\frac{k\Delta t}{\Delta x^2}\left[u_{i+1}^n-2u_i^n+u_{i-1}^n\right]$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item We need the initial temperature profile of the rod and the temperatures for all points in time of the endpoints of the rod
+\begin{itemize}
+\item We will give these values in our MatLab code
+\end{itemize}
+\item Example 1
+\begin{itemize}
+\item Length of rod, L:		1 meter 
+\item Number of points:		50 
+\item Total time, $t_f$:	5 seconds 
+\item Number of time points:	2000 
+\item Diffusivity constant:		k
+\item $r=k\frac{\Delta t}{\Delta x^2}$ \hspace{.5in}$r<0.50$ required
+\item $u(1,:)=\sin \left(\frac{2\pi}{t_f}\;t\right)$ \hspace{.5in} Left endpoint boundary conditions
+\item $u(N,:)=\cos \left(\frac{2\pi}{t_f}\;t\right)$ \hspace{.5in}Right endpoint boundary conditions
+\item $u(:,1)=\sin \left(\frac{2\pi}{L}\right)\;x$ \hspace{.5in}Initial conditions
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\[
+\begin{array}{c c}
+\includegraphics[scale=.5]{fig1} 	&	\includegraphics[scale=.5]{fig2}	
+\end{array}	
+\]
+\end{frame}
+
+\begin{frame}
+\[
+\begin{array}{c c}
+\includegraphics[scale=.5]{fig3}	&\includegraphics[scale=.5]{fig4}	
+\end{array}	
+\]
+\end{frame} 
+
+ 	
+
+\begin{frame}
+\begin{itemize}
+\item A better approximation method: Second order Runge-Katta 
+\begin{itemize}
+\item Approximate the slopes at the endpoints of each time interval
+\begin{itemize}
+\item $\widetilde{K}_{i+1}$ is found using an approximation for $u_i^{n+1}$
+\end{itemize}
+\item Use the average of these slopes to linearly approximate the solution over the interval
+\end{itemize}
+
+$$u_i^{n+1}=u_i^n+\Delta t\left[\frac{K_{i}+\widetilde{K}_{i+1} }{2}\right]$$
+\item $K_{i}\approx \text{slope at $u_i^n$}$
+\item $\widetilde{K}_{i+1}\approx \text{slope at $u_i^{n+1}$}$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item Pieces to the approximation
+\vspace{.2in}
+
+\begin{itemize}
+\item $K_{i}=\frac{u_i^{n+1}-u_i^n}{\Delta t}=\frac{k}{\Delta x^2}\left[u_{i-1}^n-2u_i^n+u_{i+1}^n\right]$
+\vspace{.2in}
+
+\item $\tilde{u}_i^{n+1}=u_i^{n}+\frac{k\Delta t}{\Delta x^2}\left[u_{i-1}^n-2u_i^n+u_{i+1}^n\right]$
+\vspace{.2in}
+
+\item $\widetilde{K}_{i+1}=\frac{u_{i}^{n+2}-u_i^{n+1}}{\Delta t}=\frac{k}{\Delta x^2}\left[\tilde{u}_{i-1}^{n+1}-2\tilde{u}_i^{n+1}+\tilde{u}_{i+1}^{n+1}\right]$
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item Example 2
+\begin{itemize}
+\item All parameters the same as in example 1
+\item Still had the same limiting diffusivity constant, $k\approx 0.083$ 
+\end{itemize}
+\end{itemize}
+\[
+\begin{array}{c c}
+\includegraphics[scale=.5]{imp_euler_fig1} 	&	\includegraphics[scale=.5]{imp_euler_fig2} 	
+\end{array}	
+\]
+\end{frame}
+
+\begin{frame}
+\[
+\begin{array}{c c}
+\includegraphics[scale=.5]{imp_euler_fig2} 	&	\includegraphics[scale=.5]{imp_euler_fig4} 	
+\end{array}	
+\]
+\end{frame}
+
+
+\begin{frame}
+\begin{center}
+Implicit Time Stepping
+\end{center}
+\begin{itemize}
+\item Benefits
+\begin{itemize}
+\item Increased stabilty of approximation
+\item Able to handle larger diffusivity constants
+\end{itemize}
+\item Drawbacks
+\begin{itemize}
+\item Need to solve a linear system  $Ax=b$
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item Setting up the approximation
+\begin{itemize}
+\item Use the Taylor's series expansion, but the RHS of our final approximation expression is in terms of $u_x^{t_{n+1}}$ rather than $u_x^{t_{n}}$. 
+\begin{align*}
+\frac{u_i^{n+1}-u_i^n}{\Delta t}	&=\frac{k}{\Delta x^2}\Big[u_{i-1}^{n+1}-2u_i^{n+1}+u_{i+1}^{n+1}\Big]	\\
+									&																			\\
+u_i^n								&=u_i^{n+1}-\frac{k\Delta t}{\Delta x^2}\Big[u_{i-1}^{n+1}-2u_i^{n+1}+u_{i+1}^{n+1}\Big] 	\\
+									&																			\\
+u_i^n								&=u_i^{n+1}\Big[1+2r\Big]-r\Big[u_{i-1}^{n+1}+u_{i+1}^{n+1}\Big]			&&,r=\frac{k\Delta t}{\Delta x^2}						
+\end{align*}
+\item We are using the value at the $next$ time step
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+\item Fix $n$ (time) and let $i$ (space) float over all of the interior points of our rod
+\begin{itemize}
+\item Boundary conditions $u(x_1,t)$ and $u(x_N,t)$ are known for all $t$
+\item Interior points
+\begin{align*}
+u_2^n	&=u_2^{n+1}\Big[1+2r\Big]-r\Big[u_{1}^{n+1}+u_{3}^{n+1}\Big] 	\\
+u_3^n	&=u_3^{n+1}\Big[1+2r\Big]-r\Big[u_{2}^{n+1}+u_{4}^{n+1}\Big] 	\\
+u_4^n	&=u_4^{n+1}\Big[1+2r\Big]-r\Big[u_{3}^{n+1}+u_{5}^{n+1}\Big] 	\\
+.		&	\\
+.		&	\\
+u_{N-2}^n	&=u_{N-2}^{n+1}\Big[1+2r\Big]-r\Big[u_{N-3}^{n+1}+u_{5}^{N-1}\Big] 	\\
+u_{N-1}^n	&=u_{N-1}^{n+1}\Big[1+2r\Big]-r\Big[u_{N-2}^{n+1}+u_{N}^{n+1}\Big] 	\\
+\end{align*}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+We move our known terms $u_1^{n+1}$ and $u_N^{n+1}$ to the RHS. 
+\vspace{.2in}
+
+Recognizing the pattern we build the linear system:
+\begingroup
+\fontsize{6pt}{10pt}\selectfont
+\[
+\left(\begin{array}{c c c c c c c}  1+2r	&-r		&0		&0	&.	&.		&0		\\
+										-r		&1+2r	&-r		&0	&0	&.		&0		\\
+										0		&-r		&1+2r	&-r	&0	&.		&0		\\
+										.		&		&.		&.	&.	&		&.		\\
+										.		&		&.		&.	&.	&		&.		\\
+										.		&		&.		&.	&.	&		&.		\\
+										0		&0		&.		&.	&-r	&1+2r	&-r		\\
+										0		&0		&.		&.	&0	&-r		&1+2r	\\ 
+\end{array}\right)	
+\left(\begin{array}{c} u_2^{n+1}\\u_3^{n+1}\\u_4^{n+1}\\.\\.\\.\\u_{N-2}^{n+1}\\u_{N-1}^{n+1}
+\end{array}\right)
+=\left(\begin{array}{c} u_2^n+ru_1^{n+1}\\u_3^n\\u_4^n\\.\\.\\.\\u_{N-2}^n\\u_{N-1}^n+ru_N^{n+1}
+\end{array}\right)
+\]
+\endgroup
+\end{frame}
+
+\begin{frame}
+\[
+\begin{array}{c c c}
+\includegraphics[scale=.3]{fig1} 	&	\includegraphics[scale=.3]{imp_euler_fig1}		&	\includegraphics[scale=.3]{implicit_fig1}	\\
+\text{Euler's} 						&	\text{Improved Euler's}									&	\text{Implicit Time Stepping}  
+\end{array}	
+\]
+\end{frame}
+
+
+\begin{frame}
+\[
+\begin{array}{c c}
+\includegraphics[scale=.5]{implicit_fig3} 	&	\includegraphics[scale=.5]{implicit_fig4} 
+\end{array}	
+\]
+\end{frame}
+
+
+\begin{frame}
+We can greatly increase the diffusivity constant and the approximation remains stable
+\[
+\begin{array}{c c}
+\includegraphics[scale=.5]{implicit_fig5} 	&	\includegraphics[scale=.5]{implicit_fig6} 
+\end{array}	
+\]
+\end{frame}
+
+
+\begin{frame}
+\[
+\begin{array}{c c}
+\includegraphics[scale=.5]{implicit_fig7} 	&	\includegraphics[scale=.5]{implicit_fig8} 
+\end{array}	
+\]
+\end{frame}
+
+\begin{frame}
+\begin{center}
+Exploring Error
+\end{center}
+\begin{itemize}
+\item Simplify IC and Boundary conditions so the we can solve for an explicit solution
+\begin{itemize}
+\item IC
+$$u(x,0)=\sin (\pi x)+0.2\sin (10\pi x)$$
+\item Boundary conditions 
+$$u(0,t)=u(1,t)=0$$
+\item Guess a solution to $u_t=ku_{xx}$ 
+$$u(t,x)=e^{-\pi ^2kt}\sin(\pi x)+0.2e^{-(10\pi)^2kt}\sin(10\pi x)$$
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\begin{align*}
+u_t 	&=\frac{\partial}{\partial t}\Big[u(x,t)\Big]			\\
+		&=	\frac{\partial}{\partial t}\Big[e^{-\pi ^2kt}\sin(\pi x)+0.2e^{-(10\pi)^2kt}\sin(10\pi x)\Big] 	\\
+		&=	-\pi ^2ke^{-\pi ^2kt}\sin(\pi x)+0.2\left[-(10\pi)^2k\right]e^{-(10\pi)^2kt}\sin(10\pi x)					\\
+		&=	k\Big[-\pi ^2e^{-\pi ^2kt}\sin(\pi x)+0.2\left[-(10\pi)^2k\right]e^{-(10\pi)^2t}\sin(10\pi x)\Big]		\\
+		&=k\frac{\partial ^2u}{\partial x^2}\Big[e^{-\pi ^2kt}\sin(\pi x)+0.2e^{-(10\pi)^2kt}\sin(10\pi x)\Big]		\\
+		&=k\frac{\partial ^2u}{\partial x^2}\Big[u(x,t)\Big]	\\
+		&=ku_{xx}
+\end{align*}
+\end{frame}
+
+\begin{frame}
+Plots with $M=2000, N=200, k=0.10 \rightarrow r=0.2972$
+\[
+\begin{array}{c c c}
+\includegraphics[scale=.25]{exact} 	&	\includegraphics[scale=.25]{euler_error_1}	&	\includegraphics[scale=.25]{euler_error_2}	\\
+\text{Exact solution}				&	\text{Euler's method}						&	\text{Error}
+\end{array}
+\]
+At which point in time should we sample the error across the rod?
+\begin{itemize}
+\item $t$ large and $t\approx 0$ the error is nearly zero
+\item Error appears non-trivial at $t\approx 0.10$ seconds
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+Improved Euler's 
+\[
+\begin{array}{c c c}
+\includegraphics[scale=.25]{exact} 	&	\includegraphics[scale=.25]{imp_euler_error_1}	&	\includegraphics[scale=.25]{imp_euler_error_2}	\\
+\text{Exact solution}				&	\text{Improved Euler's method}						&	\text{Error}
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+Implicit time stepping
+\[
+\begin{array}{c c c}
+\includegraphics[scale=.25]{exact} 	&	\includegraphics[scale=.25]{implicit_error_1}	&	\includegraphics[scale=.25]{implicit_error_2}	\\
+\text{Exact solution}				&	\text{Implicit time step method}						&	\text{Error}									\\
+									&			&	\includegraphics[scale=.25]{implicit_error_3}													
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+Euler's method at $t=.1$ seconds
+\[
+\begin{array}{c c c}
+\includegraphics[scale=.2]{error_norm_euler4} 	&	\includegraphics[scale=.2]{error_norm_euler5}	&	\includegraphics[scale=.2]{error_norm_euler6}
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+Improved Euler's method at $t=.1$ seconds
+\[
+\begin{array}{c c c}
+\includegraphics[scale=.2]{error_norm_imp_euler3} 	&	\includegraphics[scale=.2]{error_norm_imp_euler4}	&	\includegraphics[scale=.2]{error_norm_imp_euler5}
+\end{array}
+\]
+\end{frame}
+
+
+
+%\item Requires solving the linear system  $$A\vec{u}_n=\vec{u}_{n+1}$$
+%\begin{itemize} 
+%\item $\vec{u}_n$ represents values at time $n$ 
+%\item $\vec{u}_{n+1}$ represents values at time $n+1$ 
+%\end{itemize}
+
+%#############################################################################
+%#############################################################################
+%
+%       CONCLUSION
+%
+\section{Remarks}\label{Remarks}
+
+\begin{frame}\frametitle{Remarks}
+\end{frame}
+
+%#############################################################################
+%#############################################################################
+%
+%       ACKNOWLEDGMENTS
+%
+\section{Acknowledgments}\label{Acknowledgments}
+
+\begin{frame}\frametitle{Acknowledgments}
+\end{frame}
+
+%##############################################################################
+%##############################################################################
+%
+%       END OF PRESENTATION
+%
+\end{document}
