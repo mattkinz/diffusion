@@ -38,9 +38,9 @@
 \usepackage{graphics,multimedia,times,url}
 \usepackage[english]{babel}
 
-\title{Sample BEAMER Presentation}
+\title{Exploring Approximations for the Diffusion Equation}
 \author{ Matt Kinsinger\thanks{mkinsing@asu.edu} }
-\date{May 9, 2017}
+\date{May 12, 2017}
 
 \institute[Mathematics and Statistics]{
 \includegraphics[height=.85cm]{ASUlogo.pdf} \\
@@ -159,7 +159,7 @@ $$u_i^{n+1}=u_i^n+\Delta t\left[\frac{K_{i}+\widetilde{K}_{i+1} }{2}\right]$$
 \begin{itemize}
 \item Setting up the approximation
 \begin{itemize}
-\item Use the Taylor's series expansion, but the RHS of our final approximation expression is in terms of $u_x^{t_{n+1}}$ rather than $u_x^{t_{n}}$. 
+\item Use the Taylor's series expansion, but the RHS of our final approximation expression is in terms of $u_x^{n+1}$ rather than $u_x^{n}$. 
 \begin{align*}
 \frac{u_i^{n+1}-u_i^n}{\Delta t}	&=\frac{k}{\Delta x^2}\Big[u_{i-1}^{n+1}-2u_i^{n+1}+u_{i+1}^{n+1}\Big]	\\
 									&																			\\
@@ -358,13 +358,13 @@ $$u(t^n\pm \Delta t)=\sum\limits_{k=0}^N\left(\pm \Delta t\right)^k f^{(k)}(t^n)
 
 \begin{frame}
 \begin{center}
-x's first...
+x first...
 \end{center}
 \begin{align*}
 U_{j+1}	&=u(x_j+\Delta x)\\&=u(x_j)+\Delta xU_x(x_j)+\frac{\Delta x^2}{2!}U_{xx}(x_j)+\frac{\Delta x^3}{3!}U_xxx(x_j)+\frac{\Delta x^4}{4!}U_{4x}(x_j)+....
 \end{align*}
 \begin{align*}
-U_{j-1}	&=u(x_j-\Delta x)\\&=u(x_j)-\Delta xU_x(x_j)+\frac{\Delta x^2}{2!}U_{xx}(x_j)-\frac{\Delta x^3}{3!}U_xxx(x_j)+\frac{\Delta x^4}{4!}U_{4x}(x_j)+....
+U_{j-1}	&=u(x_j-\Delta x)\\ &=u(x_j)-\Delta xU_x(x_j)+\frac{\Delta x^2}{2!}U_{xx}(x_j)-\frac{\Delta x^3}{3!}U_xxx(x_j)+\frac{\Delta x^4}{4!}U_{4x}(x_j)+....
 \end{align*}
 \vspace{.2in}
 \[
@@ -372,9 +372,10 @@ U_{j-1}	&=u(x_j-\Delta x)\\&=u(x_j)-\Delta xU_x(x_j)+\frac{\Delta x^2}{2!}U_{xx}
 \]
 \end{frame}
 
+
 \begin{frame}
 \begin{center}
-Now t's...
+Now t...
 \end{center}
 $U^{n+1}=u(t^n+\Delta t)=u(t^n)+\Delta tU_t(t^n)+\frac{\Delta t^2}{2!}U_{tt}(t^n)+\frac{\Delta t^3}{3!}U_{ttt}(t^n)+....\Delta t^{large}$
 \vspace{.2in}
@@ -395,16 +396,54 @@ U_t(t^n)+\frac{\Delta t}{2!}U_{tt}(t^n)+\frac{\Delta t^2}{3!}U_{ttt}(t^n)+....=k
 \]
 \vspace{.2in}
 \begin{align*}
-U_t &= kU_{xx}-\frac{\Delta t}{2}U_{tt}-\frac{\Delta t^2}{6}U_{3t}+k\frac{\Delta x^2}{12}U_{4x}+....&&(3)
+U_t &= kU_{xx}-\frac{\Delta t}{2}U_{tt}-\frac{\Delta t^2}{6}U_{3t}+k\frac{\Delta x^2}{12}U_{4x}+....&&(3) \\
+U_t &= kU_{xx}-error
 \end{align*}
 \end{frame}
-%U_{j-1}	&	=u(x_j-\Delta x)
-%\item Requires solving the linear system  $$A\vec{u}_n=\vec{u}_{n+1}$$
-%\begin{itemize} 
-%\item $\vec{u}_n$ represents values at time $n$ 
-%\item $\vec{u}_{n+1}$ represents values at time $n+1$ 
-%\end{itemize}
 
+\begin{frame}
+$\frac{\partial}{\partial t}\Big[U_{t}=kU_{xx}\Big] \longrightarrow U_{tt}=kU_{xxt}$
+\vspace{.1in}
+
+$\frac{\partial ^2}{\partial x^2}\Big[kU_{xx}=U_{t}\Big] \longrightarrow kU_{4x}=U_{txx}$ 
+\vspace{.1in}
+
+So, $$U_{tt}=k^2U_{4x}$$
+\begin{align*}
+U_{t}	&=	kU_{xx}-\frac{\Delta t}{2}\Big[k^2U_{4x}\Big]-\frac{\Delta t^2}{6}U_{3t}+k\frac{\Delta x^2}{12}U_{4x}+....	\\
+U_{t}	&=	kU_{xx}+U_{4x}\Big[k\frac{\Delta x^2}{12}-k^2\frac{\Delta t}{2}\Big]-\frac{\Delta t^2}{6}U_{3t}+.....
+\end{align*}
+\end{frame}
+
+\begin{frame}
+\begin{align*}
+0 			&=k\frac{\Delta x^2}{12}-k^2\frac{\Delta t}{2}	\\
+0			&=\frac{\Delta x^2}{6}-k\Delta t 				\\
+k\Delta t	&=\frac{\Delta x^2}{6}							\\
+\frac{k\Delta t}{\Delta x^2}	&= \frac{1}{6}				\\
+r			&=	\frac{1}{6}.	
+\end{align*}
+\end{frame}
+
+\begin{frame}
+\[
+\begin{array}{c c c}
+\includegraphics[scale=.2]{error_norm_euler4_log}		&	\includegraphics[scale=.2]{error_norm_euler5_log}		&	\includegraphics[scale=.2]{error_norm_euler6_log}		\\
+\includegraphics[scale=.2]{error_norm_euler4_log_zoom}		&	\includegraphics[scale=.2]{error_norm_euler5_log_zoom}		&	\includegraphics[scale=.2]{error_norm_euler6_log_zoom}
+\end{array}
+\]
+\end{frame}
+
+\begin{frame}
+\begin{center}
+Error with different $r$ values
+\end{center}
+\[
+\begin{array}{c c c}
+\includegraphics[scale=.3]{euler_error_3_rbelow}	&	\includegraphics[scale=.3]{euler_error_3_min}	&	\includegraphics[scale=.3]{euler_error_3_rabove}
+\end{array}
+\]
+\end{frame}
 %#############################################################################
 %#############################################################################
 %
@@ -413,6 +452,10 @@ U_t &= kU_{xx}-\frac{\Delta t}{2}U_{tt}-\frac{\Delta t^2}{6}U_{3t}+k\frac{\Delta
 \section{Remarks}\label{Remarks}
 
 \begin{frame}\frametitle{Remarks}
+Thank you Juan
+\vspace{.3in}
+
+Thank you Professor Platte
 \end{frame}
 
 %#############################################################################
