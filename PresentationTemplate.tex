@@ -76,60 +76,42 @@
 \item Notation for $u$ evaluated at discretized points in space and time $$u(x_i,t_n)=u_i^n$$
 \item The heat equation, a second order partial differential equation
 $$\frac{\partial u}{\partial t}=k\frac{\partial ^2u}{\partial x^2 }$$
-\item Euler's method approximation
-$$u_i^{n+1}\approx u_i^n+\frac{k\Delta t}{\Delta x^2}\left[u_{i+1}^n-2u_i^n+u_{i-1}^n\right]$$
-\end{itemize}
-\end{frame}
-
-\begin{frame}
+\item Three approximation strategies
 \begin{itemize}
-\item We need the initial temperature profile of the rod and the temperatures for all points in time of the endpoints of the rod
-\begin{itemize}
-\item We will give these values in our MatLab code
-\end{itemize}
-\item Example 1
-\begin{itemize}
-\item Length of rod, L:		1 meter 
-\item Number of points:		50 
-\item Total time, $t_f$:	5 seconds 
-\item Number of time points:	2000 
-\item Diffusivity constant:		k
-\item $r=k\frac{\Delta t}{\Delta x^2}$ \hspace{.5in}$r<0.50$ required
-\item $u(1,:)=\sin \left(\frac{2\pi}{t_f}\;t\right)$ \hspace{.5in} Left endpoint boundary conditions
-\item $u(N,:)=\cos \left(\frac{2\pi}{t_f}\;t\right)$ \hspace{.5in}Right endpoint boundary conditions
-\item $u(:,1)=\sin \left(\frac{2\pi}{L}\right)\;x$ \hspace{.5in}Initial conditions
+\item Euler's method
+\item Improved Euler's method
+\item Implicit Time Stepping
 \end{itemize}
 \end{itemize}
 \end{frame}
 
 \begin{frame}
-\[
-\begin{array}{c c}
-\includegraphics[scale=.5]{fig1} 	&	\includegraphics[scale=.5]{fig2}	
-\end{array}	
-\]
+\begin{center}
+\underline{Euler's Method} 
+\vspace{.2in}
+
+$u_i^{n+1}\approx u_i^n+\frac{k\Delta t}{\Delta x^2}\left[u_{i+1}^n-2u_i^n+u_{i-1}^n\right]$
+\end{center}
+\begin{itemize}
+\item This can be derived using Taylor series expansions in each variable
+\end{itemize}
 \end{frame}
 
-\begin{frame}
-\[
-\begin{array}{c c}
-\includegraphics[scale=.5]{fig3}	&\includegraphics[scale=.5]{fig4}	
-\end{array}	
-\]
-\end{frame} 
+
 
  	
 
 \begin{frame}
-\begin{itemize}
-\item A better approximation method: Second order Runge-Katta 
+\begin{center}
+\underline{Improved Euler's method} 
+\end{center}
 \begin{itemize}
 \item Approximate the slopes at the endpoints of each time interval
 \begin{itemize}
 \item $\widetilde{K}_{i+1}$ is found using an approximation for $u_i^{n+1}$
 \end{itemize}
 \item Use the average of these slopes to linearly approximate the solution over the interval
-\end{itemize}
+
 
 $$u_i^{n+1}=u_i^n+\Delta t\left[\frac{K_{i}+\widetilde{K}_{i+1} }{2}\right]$$
 \item $K_{i}\approx \text{slope at $u_i^n$}$
@@ -154,33 +136,11 @@ $$u_i^{n+1}=u_i^n+\Delta t\left[\frac{K_{i}+\widetilde{K}_{i+1} }{2}\right]$$
 \end{itemize}
 \end{frame}
 
-\begin{frame}
-\begin{itemize}
-\item Example 2
-\begin{itemize}
-\item All parameters the same as in example 1
-\item Still had the same limiting diffusivity constant, $k\approx 0.083$ 
-\end{itemize}
-\end{itemize}
-\[
-\begin{array}{c c}
-\includegraphics[scale=.5]{imp_euler_fig1} 	&	\includegraphics[scale=.5]{imp_euler_fig2} 	
-\end{array}	
-\]
-\end{frame}
-
-\begin{frame}
-\[
-\begin{array}{c c}
-\includegraphics[scale=.5]{imp_euler_fig2} 	&	\includegraphics[scale=.5]{imp_euler_fig4} 	
-\end{array}	
-\]
-\end{frame}
 
 
 \begin{frame}
 \begin{center}
-Implicit Time Stepping
+\underline{Implicit Time Stepping}
 \end{center}
 \begin{itemize}
 \item Benefits
@@ -256,6 +216,31 @@ Recognizing the pattern we build the linear system:
 \endgroup
 \end{frame}
 
+
+\begin{frame}
+\begin{center}
+Comparing plots
+\end{center}
+\begin{itemize}
+\item We need the initial temperature profile of the rod and the temperatures for all points in time of the endpoints of the rod
+\begin{itemize}
+\item We will give these values in our MatLab code
+\end{itemize}
+\item Example 1
+\begin{itemize}
+\item Length of rod, L:		1 meter 
+\item Number of points:		50 
+\item Total time, $t_f$:	5 seconds 
+\item Number of time points:	2000 
+\item Diffusivity constant:		k
+\item $r=k\frac{\Delta t}{\Delta x^2}$ \hspace{.5in}$r<0.50$ required
+\item $u(1,:)=\sin \left(\frac{2\pi}{t_f}\;t\right)$ \hspace{.5in} Left endpoint boundary conditions
+\item $u(N,:)=\cos \left(\frac{2\pi}{t_f}\;t\right)$ \hspace{.5in}Right endpoint boundary conditions
+\item $u(:,1)=\sin \left(\frac{2\pi}{L}\right)\;x$ \hspace{.5in}Initial conditions
+\end{itemize}
+\end{itemize}
+\end{frame}
+
 \begin{frame}
 \[
 \begin{array}{c c c}
@@ -266,36 +251,14 @@ Recognizing the pattern we build the linear system:
 \end{frame}
 
 
-\begin{frame}
-\[
-\begin{array}{c c}
-\includegraphics[scale=.5]{implicit_fig3} 	&	\includegraphics[scale=.5]{implicit_fig4} 
-\end{array}	
-\]
-\end{frame}
 
 
-\begin{frame}
-We can greatly increase the diffusivity constant and the approximation remains stable
-\[
-\begin{array}{c c}
-\includegraphics[scale=.5]{implicit_fig5} 	&	\includegraphics[scale=.5]{implicit_fig6} 
-\end{array}	
-\]
-\end{frame}
 
 
-\begin{frame}
-\[
-\begin{array}{c c}
-\includegraphics[scale=.5]{implicit_fig7} 	&	\includegraphics[scale=.5]{implicit_fig8} 
-\end{array}	
-\]
-\end{frame}
 
 \begin{frame}
 \begin{center}
-Exploring Error
+\underline{Exploring Error}
 \end{center}
 \begin{itemize}
 \item Simplify IC and Boundary conditions so the we can solve for an explicit solution
@@ -306,7 +269,7 @@ $$u(x,0)=\sin (\pi x)+0.2\sin (10\pi x)$$
 $$u(0,t)=u(1,t)=0$$
 \item Guess a solution to $u_t=ku_{xx}$ 
 $$u(t,x)=e^{-\pi ^2kt}\sin(\pi x)+0.2e^{-(10\pi)^2kt}\sin(10\pi x)$$
-\end{itemize}
+\end{itemize}		
 \end{itemize}
 \end{frame}
 
@@ -318,61 +281,63 @@ u_t 	&=\frac{\partial}{\partial t}\Big[u(x,t)\Big]			\\
 		&=	k\Big[-\pi ^2e^{-\pi ^2kt}\sin(\pi x)+0.2\left[-(10\pi)^2k\right]e^{-(10\pi)^2t}\sin(10\pi x)\Big]		\\
 		&=k\frac{\partial ^2u}{\partial x^2}\Big[e^{-\pi ^2kt}\sin(\pi x)+0.2e^{-(10\pi)^2kt}\sin(10\pi x)\Big]		\\
 		&=k\frac{\partial ^2u}{\partial x^2}\Big[u(x,t)\Big]	\\
-		&=ku_{xx}
+		&=ku_{xx}	 		\\
 \end{align*}
+It is a solution! We can use this to measure the error in our approximations!
 \end{frame}
 
 \begin{frame}
-Plots with $M=2000, N=200, k=0.10 \rightarrow r=0.2972$
+Plots with $M=2000, N=200, k=0.01 \rightarrow r=0.2972$
 \[
-\begin{array}{c c c}
-\includegraphics[scale=.25]{exact} 	&	\includegraphics[scale=.25]{euler_error_1}	&	\includegraphics[scale=.25]{euler_error_2}	\\
-\text{Exact solution}				&	\text{Euler's method}						&	\text{Error}
+\begin{array}{c c c c}
+\text{Exact solution} 	&	\includegraphics[scale=.2]{euler_error_1}	&	\includegraphics[scale=.2]{euler_error_2}	&	\text{Euler's}	\\
+\includegraphics[scale=.2]{exact}				&	\includegraphics[scale=.2]{imp_euler_error_1}	&	\includegraphics[scale=.2]{imp_euler_error_2}	&	\text{Improved Euler's}		\\
+									&	\includegraphics[scale=.2]{implicit_error_1}	&	\includegraphics[scale=.2]{implicit_error_2}	&\text{Implicit}					
 \end{array}
 \]
+\end{frame}
+
+
+\begin{frame}
 At which point in time should we sample the error across the rod?
 \begin{itemize}
 \item $t$ large and $t\approx 0$ the error is nearly zero
 \item Error appears non-trivial at $t\approx 0.10$ seconds
+\item Experiment:
+\begin{itemize}
+\item A given number of sample points in space
+\item Range through different numbers of sample points in time
+\begin{itemize}
+\item $r=\frac{k\Delta t}{\Delta x^2}$ $\downarrow$ \hspace{.1in} as $\Delta t$ $\downarrow$
+\end{itemize}
+\end{itemize}
 \end{itemize}
 \end{frame}
 
+
 \begin{frame}
-Improved Euler's 
 \[
 \begin{array}{c c c}
-\includegraphics[scale=.25]{exact} 	&	\includegraphics[scale=.25]{imp_euler_error_1}	&	\includegraphics[scale=.25]{imp_euler_error_2}	\\
-\text{Exact solution}				&	\text{Improved Euler's method}						&	\text{Error}
+\includegraphics[scale=.2]{error_norm_euler4} 	&	\includegraphics[scale=.2]{error_norm_euler5}	&	\includegraphics[scale=.2]{error_norm_euler6}		\\
+\includegraphics[scale=.2]{error_norm_imp_euler3} 	&	\includegraphics[scale=.2]{error_norm_imp_euler4}	&	\includegraphics[scale=.2]{error_norm_imp_euler5}			\\
+\text{Implicit time stepping:}		&	\text{The code ran forever}		&	
 \end{array}
 \]
 \end{frame}
 
 \begin{frame}
-Implicit time stepping
+\begin{center}
+Log plot to get a closer look at Euler's method approximation
+\end{center}
 \[
 \begin{array}{c c c}
-\includegraphics[scale=.25]{exact} 	&	\includegraphics[scale=.25]{implicit_error_1}	&	\includegraphics[scale=.25]{implicit_error_2}	\\
-\text{Exact solution}				&	\text{Implicit time step method}						&	\text{Error}									\\
-									&			&	\includegraphics[scale=.25]{implicit_error_3}													
+\includegraphics[scale=.2]{error_norm_euler4} 	&	\includegraphics[scale=.2]{error_norm_euler5}	&	\includegraphics[scale=.2]{error_norm_euler6}		\\
+\includegraphics[scale=.2]{error_norm_euler4_log}		&	\includegraphics[scale=.2]{error_norm_euler5_log}		&	\includegraphics[scale=.2]{error_norm_euler6_log}	
 \end{array}
 \]
-\end{frame}
-
-\begin{frame}
-Euler's method at $t=.1$ seconds
+At some point just above $r=0.10$ we see the error becoming very small!
 \[
-\begin{array}{c c c}
-\includegraphics[scale=.2]{error_norm_euler4} 	&	\includegraphics[scale=.2]{error_norm_euler5}	&	\includegraphics[scale=.2]{error_norm_euler6}
-\end{array}
-\]
-\end{frame}
-
-\begin{frame}
-Improved Euler's method at $t=.1$ seconds
-\[
-\begin{array}{c c c}
-\includegraphics[scale=.2]{error_norm_imp_euler3} 	&	\includegraphics[scale=.2]{error_norm_imp_euler4}	&	\includegraphics[scale=.2]{error_norm_imp_euler5}
-\end{array}
+\text{Intersting...Why?}
 \]
 \end{frame}
 
